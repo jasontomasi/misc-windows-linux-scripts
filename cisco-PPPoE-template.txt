@@ -1,0 +1,60 @@
+
+PPPoE server
+--------------------------
+
+aaa new-model
+
+aaa authentication ppp PPPAUTHLIST local 
+
+username hello password 1234
+
+ip local pool XYZpool 203.79.60.10 203.79.60.254
+
+bba-group pppoe bba1
+  virtual-template 1
+exit
+
+interface Virtual-Template1
+ peer default ip address pool XYZpool
+ ip unnumbered Ethernet0/0
+ encapsulation ppp
+exit
+
+interface Ethernet0/0
+no shutdown
+exit
+
+interface Ethernet0/0.10
+ encapsulation dot1q 10
+ ip address 203.79.60.1 255.255.255.0
+ pppoe enable group bba1
+exit
+
+
+
+
+
+
+PPPoE client
+--------------------------
+
+aaa new-model
+
+aaa authentication ppp PPPAUTHLIST local 
+
+username hello password 1234
+
+interface Ethernet0/0.10
+ encapsulation dot1q 10
+ no ip address
+ pppoe enable
+ pppoe-client dial-pool-number 1
+
+interface Dialer1
+ dialer pool 1
+ ip address negotiated
+ ip mtu 1492
+ encapsulation ppp
+
+ip route 0.0.0.0 0.0.0.0 Dialer1
+

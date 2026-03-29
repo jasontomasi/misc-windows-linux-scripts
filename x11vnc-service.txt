@@ -1,0 +1,55 @@
+/etc/systemd/system/x11vnc.service
+
+
+
+
+
+
+
+
+[Unit]
+Description=Start X11VNC at startup.
+After=multi-user.target
+ 
+[Service]
+Type=simple
+ExecStart=x11vnc -auth /run/user/110/gdm/Xauthority -forever -N -nevershared -display :0 -find -rfbauth /home/intuitive/.vnc/passwd
+ 
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+x11vnc -auth /run/user/110/gdm/Xauthority -forever -nevershared -N -display :0 -find -rfbauth /home/intuitive/.vnc/passwd
+
+
+
+
+------------
+
+Using authority file /root/.Xauthority
+xauth> list
+GladOS.intuitive.geek.nz:1  MIT-MAGIC-COOKIE-1  eb26870956a25ec0b3439cf24d399e3f
+GladOS/unix:1  MIT-MAGIC-COOKIE-1  eb26870956a25ec0b3439cf24d399e3f
+
+
+
+
+
+x11vnc -env FD_XDM=1 -auth guess -findauth
+
+
+
+x11vnc -finddpy
+
+/usr/bin/x11vnc -auth /root/.Xauthority -display :0 -find -create -localhost -no6 -noipv6 -rfbauth /root/.vnc/passwd
+
+
+
+https://just.graphica.com.au/tips/ubuntu-and-remote-gnome-desktop/
+
+https://unix.stackexchange.com/questions/653221/how-can-i-set-up-x11vnc-to-start-on-boot-with-lightdm
+
+https://manpages.debian.org/testing/x11vnc/x11vnc.1.en.html
+

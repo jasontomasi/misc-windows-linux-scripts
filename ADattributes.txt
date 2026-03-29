@@ -1,0 +1,25 @@
+AD attributes:
+
+userAccountControl
+0x200 (512) = enabled
+0x220 (544) = enabled
+0x10200 (66048) = enabled + PWD never expired
+0x202 (514) = disabled
+
+
+
+
+badPasswordTime
+Replication = NO
+
+
+
+
+lastlogontimestamp
+Replication = YES
+
+
+
+ADfind parameters:
+
+adfind.exe -bit -b OU=.People,DC=eqc,DC=local -s subtree -f "(&(objectCategory=person)(objectclass=user)(!userAccountControl:AND:=2))" displayname lastlogontimestamp userAccountControl -csv -tdcsfmt %DD%%MM%%YYYY% -tdcs > DisabledUserReport.csv

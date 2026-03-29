@@ -1,0 +1,8 @@
+attrib -r -h -s /S /D C:\boot\*.*
+del /S /Q C:\boot
+rmdir /S /Q C:\boot
+
+bcdboot C:\Windows /l en-us /s x: /f ALL
+
+bcdedit /set {default} bootmenupolicy legacy
+bootrec /rebuildbcd

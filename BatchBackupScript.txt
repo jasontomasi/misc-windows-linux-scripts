@@ -1,0 +1,53 @@
+echo off
+@cls
+for /f "tokens=1-8 delims=.:/-, " %%i in ('echo exit^|cmd /q /k"prompt $D $T"') do (
+   for /f "tokens=2-4 delims=/-,() skip=1" %%a in ('echo.^|date') do (
+set mm=%%k
+set dd=%%j
+set yy=%%l
+)
+)
+if %mm%==01 set MMM=Jan
+if %mm%==02 set MMM=Feb
+if %mm%==03 set MMM=Mar
+if %mm%==04 set MMM=Apr
+if %mm%==05 set MMM=May
+if %mm%==06 set MMM=Jun
+if %mm%==07 set MMM=Jul
+if %mm%==08 set MMM=Aug
+if %mm%==09 set MMM=Sep
+if %mm%==10 set MMM=Oct
+if %mm%==11 set MMM=Nov
+if %mm%==12 set MMM=Dec
+
+set DateStamp=%yy%%mm%%dd%
+set StartFolder=C:\path
+set DestFolder=C:\path\bkup\%yy%\%MMM%
+ 
+if exist "%DestFolder%\" (
+	@echo.
+	@echo.
+	@echo Folder "%DestFolder%" already exists.
+	@echo.
+	@echo Therefore it is assumed the backup has already been run today.
+	@echo.
+	@echo Terminating...
+	@echo.
+	@echo.
+	@echo.
+        timeout /T 5 > nul
+	goto :EOF
+	)
+
+md "%DestFolder%"	
+
+@For %%a in ("%StartFolder%\*.xlsm") do copy "%%a" "%DestFolder%\%%~na_%datestamp%.xlsm"
+@For %%a in ("%StartFolder%\*.xlsx") do copy "%%a" "%DestFolder%\%%~na_%datestamp%.xlsx"
+@cls
+@echo.
+@echo.
+@echo Backup completed successfully.
+@echo.
+@echo.
+timeout /T 5 > nul
+Goto :EOF

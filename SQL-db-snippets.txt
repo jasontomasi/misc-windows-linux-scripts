@@ -1,0 +1,18 @@
+SQL database consistency
+-------------------------
+
+RESTORE DATABASE GoldMine WITH RECOVERY;
+	(cannot be run in single-user mode, and should be run from the context of the 'master' db)
+
+SELECT state_desc FROM sys.databases WHERE name = 'GoldMine';
+	(the 'state_desc' field stores the status of the DB; online, emergency...)
+
+
+
+
+
+
+
+
+
+https://www.stellarinfo.com/blog/recover-sql-database-from-emergency-mode-to-normal-mode/

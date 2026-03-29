@@ -1,0 +1,3 @@
+wget http://www.ipvanquish.com/download/CiscoIOUKeygen3f.py
+echo '127.0.0.127 xml.cisco.com' >> /etc/hosts
+python3 CiscoIOUKeygen3f.py

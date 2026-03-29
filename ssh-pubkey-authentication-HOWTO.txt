@@ -1,0 +1,21 @@
+
+# Generate SSH keypair; public & private (default locations for new keys in the user's homedir: ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub)
+	ssh-keygen
+
+
+# Use 'ssh-copy-id' utility to copy newly-generated keys onto server and add the key to the remote account's authorized_keys file (~/.ssh/authorized_keys))
+	ssh-copy-id intuitive@127.0.0.1
+
+
+# Copy newly-generated keys onto client (windows)
+	pscp -scp -4 -r -p -v intuitive@192.168.137.10:/home/intuitive/.ssh/id_rsa C:\Users\Intuitive\OneDrive\Desktop\EVE-NG\
+	pscp -scp -4 -r -p -v intuitive@192.168.137.10:/home/intuitive/.ssh/id_rsa.pub C:\Users\Intuitive\OneDrive\Desktop\EVE-NG\
+
+
+# Use putty's puttygen utility to convert the pubkey into putty's PPK format
+	puttygen.exe
+
+
+# Use the -i switch in putty's pscp client for specifying authkey (.ppk file) (pageant not required)
+	pscp -scp -4 -r -p -v -P 22 -i "C:\Users\Intuitive\OneDrive\Desktop\EVE-NG\is_rsa_priv.ppk" intuitive@192.168.137.10:/home/intuitive/backups/ C:\Users\Intuitive\OneDrive\Desktop\EVE-NG\
+

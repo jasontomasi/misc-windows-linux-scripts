@@ -1,0 +1,148 @@
+BACKUP (run from the linux backup server)
+------
+
+TO FIX:
+- rsync copies all files each time because source & destination filenames are never the same (server script removed '(' and ')'), making filesnames distinct
+- check: whether inheritance works for 'chgrp' (should be backup grp so that non-root users can access)
+
+
+
+
+
+
+
+
+
+Requirements:
+- OpenSSH (https://github.com/PowerShell/Win32-OpenSSH)
+- DeltaCopy (added to PATH envvar) (http://www.aboutmyip.com/AboutMyXApp/DeltaCopy.jsp)
+- SSH auth keys configured on server, to enable pAAHssw0rd-less connectivity
+- Backup client to store backups in 'V:\BACKUP'
+
+(DeltaCopy will translate between Windows drive letters and unix folder paths ('V:\BACKUP' becomes '/cygdrive/V/BACKUP/')
+
+
+REMOVED:
+scp -B -4 -i /var/backups/.ssh/id_rsa /var/backups/filelist.txt intuitive@192.168.137.1:/BACKUP/
+
+
+
+
+Pre-install tasks:
+
+# To enable the backup account to write files to the backup location (not required when script is running under root account)
+chown -R backup:backup /var/backups/
+
+# To mark script as an executable
+chmod +x /var/backups/backup.sh
+
+# To disable the rsync service from running on the server
+systemctl disable rsync
+
+# Generate the SSH keys with OpenSSH then transfer to the backup server: /var/backups/.ssh/id_rsa, /var/backups/.ssh/id_rsa.pub
+
+# To remove the passphrase from a private key
+ssh-keygen -p -f ~/.ssh/id_rsa
+
+# Import the SSH keys under the 'backup' account on the backup server
+ssh-agent bash
+ssh-add ~/.ssh/id_rsa
+
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+# Set proper permissions on the SSH key folders and files
+chmod 600 ~/.ssh/id_rsa
+chmod 600 ~/.ssh/id_rsa.pub
+chmod 700 ~/.ssh
+
+# Add crontab entry
+	30 * * * *      root    . /root/.ssh/environment; /var/backups/backup.sh
+
+
+Scripts:
+/var/backups/backup.sh
+/var/backups/backup-multi.sh
+
+
+
+Script for generating IP hostlist for use by /var/backups/backup-multi.sh
+-------------------------------------------------------------------------
+#!/usr/bin/bash
+# Generate an array of IP addresses in the range, and output to a text file
+for ((HOST=1;HOST<10;HOST+=1));
+do
+	echo 192.168.137.$HOST >> backup-hosts.txt
+done
+cat backup-hosts.txt
+
+
+
+
+/var/backups/backup.sh
+----------------------
+#!/usr/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+unset SSH_AUTH_SOCK
+unset KRB5CCNAME
+
+rsync --noatime --update -avh intuitive@192.168.137.1:/BACKUP/ /var/backups/LEMONADE/
+rsync --noatime --update -avh -e "ssh -i /var/backups/.ssh/id_rsa" intuitive@192.168.137.1:/BACKUP/ /var/backups/LEMONADE/
+
+remov_char2='\('
+subst_char2=''
+for filerename in /var/backups/*/*.zip; do
+    mv "$filerename" "${filerename//$remov_char2/$subst_char2}"
+done
+
+remov_char3='\)'
+subst_char3=''
+for filerename in /var/backups/*/*.zip; do
+    mv "$filerename" "${filerename//$remov_char3/$subst_char3}"
+done
+
+find /var/backups/*/*.zip -type f | sed 's!/var/backups/!!' > /var/backups/filelist.txt
+
+rsync --noatime --update -avh -e "ssh -i /var/backups/.ssh/id_rsa" /var/backups/filelist.txt intuitive@192.168.137.1:/BACKUP/
+
+
+
+
+
+
+
+
+
+
+/var/backups/backup-multi.sh
+----------------------------
+#!/usr/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+unset SSH_AUTH_SOCK
+unset KRB5CCNAME
+
+
+USER=intuitive
+
+while read HOST
+do
+  rsync --noatime --update -avh $USER@$HOST:/BACKUP/ /var/backups/$HOST/
+done <<<$(cat /home/intuitive/backup-hosts.txt)
+
+
+remov_char2='\('
+subst_char2=''
+for filerename in /var/backups/*/*.zip; do
+    mv "$filerename" "${filerename//$remov_char2/$subst_char2}"
+done
+
+remov_char3='\)'
+subst_char3=''
+for filerename in /var/backups/*/*.zip; do
+    mv "$filerename" "${filerename//$remov_char3/$subst_char3}"
+done
+
+find /var/backups/*/*.zip -type f | sed 's!/var/backups/!!' > /var/backups/filelist.txt
+
+rsync --noatime --update -avh -e "ssh -i /var/backups/.ssh/id_rsa" /var/backups/filelist.txt intuitive@192.168.137.1:/BACKUP/

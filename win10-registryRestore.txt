@@ -1,0 +1,1 @@
+copy %%windir%%\System32\config\RegBack\*.* %%windir%%\System32\config\

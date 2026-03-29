@@ -1,0 +1,106 @@
+export http_proxy=http://192.168.137.1:6588
+export https_proxy=http://192.168.137.1:6588
+
+apt install autoconf automake cmake binutils manpages manpages-dev cpp gcc curl wget iproute2 libncurses5 libncurses5-dev rsync openssh-server htop colordiff diffutils ssh-tools gcc python3-dev python3-pip hydra httptunnel masscan lcsync lcshare nmap proxychains4 proxytunnel proxycheck nat-traverse pssh net-tools
+
+apt remove exim4-base exim4-config exim4-daemon-light
+
+systemctl disable rsync
+systemctl enable ssh
+
+
+
+Diable power management
+-----------
+systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+
+
+/etc/gdm3/greeter.dconf-defaults
+--------------
+sleep-inactive-ac-timeout=0 
+sleep-inactive-ac-type='nothing'
+
+
+
+
+
+echo "export http_proxy=http://192.168.137.1:6588" >> $HOME/.bashrc
+echo "export https_proxy=http://192.168.137.1:6588" >> $HOME/.bashrc
+
+# Show TCP & UDP listening sockets with process names & PIDs
+ss -ltpu
+
+# Beautiful prompt
+
+
+pico ~/.bashrc
+pico /home/intuitive/.bashrc
+
+
+
+DEBIAN 11 DEFAULT: ${debian_chroot:+($debian_chroot)}\u@\h:\w\$
+
+https://robotmoon.com/bash-prompt-generator/
+https://www.cyberciti.biz/faq/bash-shell-change-the-color-of-my-shell-prompt-under-linux-or-unix/
+
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;36m\]\u\[\033[01;35m\]@\h\[\033[01;33m\]:\[\033[01;31m\]\w\[\033[01;33m\]\$ '
+
+PS1="\[\033[35m\]\u\[\033[37m\]@\033[31m\]\h \033[32m\]W\$\[\033[33m\]"
+
+pink, white, purple, green, yellow
+PS1="\[\033[01;35m\]\u\[\033[37m\]@\033[0;35m\]\h \033[32m\]~\$\[\033[33m\]"
+
+turq, white, purple, green, pink
+PS1="\[\033[01;36m\]\u\[\033[37m\]@\033[0;35m\]\h \033[32m\]~\$ \[\033[01;35m\]"
+
+pink, white, purple, green, pink (time)
+PS1="\[\033[01;35m\]\u\[\033[37m\]@\033[0;35m\]\h\[\033[31m\] (\t) \033[32m\]~\$ \[\033[01;35m\]"
+
+
+TEST
+turq, red, green, , red, green, pink
+PS1="\[\033[01;36m\]\u\[\033[00;31m\]@\033[00;32m\]\h\[\033[00;31m\] (\T) \033[01;37m\]\w\[\033[00;31m\]\$ \[\033[00;35m\]"
+
+purple, red, green, red, turq, yellow
+PS1="\[\033[0;35m\]\u\[\033[00;31m\]@\033[00;32m\]\h\[\033[00;31m\] (\T) \[\033[01;36m\]\w\$ \[\033[01;33m\]"
+
+purple, red, green, red, turq, pink
+PS1="\[\033[0;35m\]\u\[\033[00;31m\]@\033[00;32m\]\h\[\033[00;31m\] {\T} \[\033[01;36m\]\w\$ \[\033[01;35m\]"
+
+purple, red, green, red, turq, red (bright)
+PS1="\[\033[0;35m\]\u\[\033[00;31m\]@\033[00;32m\]\h\[\033[00;31m\] {\T} \[\033[01;36m\]\w\$ \[\033[01;31m\]"
+
+PINK, PURPLE, (time)
+PS1="\[\033[0;35m\]\u\[\033[00;97m\]@\033[00;92m\]\h\[\033[00;31m\] {\T} \[\033[01;34m\]\w\$ \[\033[01;35m\]"
+
+
+
+
+
+
+PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
+
+
+Green, Orange, blue
+PS1="\[\e[38;5;34m\]\u\[\e[38;5;15m\]@\[\e[38;5;9m\]\h\e::\[\e[38;5;33m\]\w \[\033[0m\]$ "
+
+Green, Red, blue
+PS1="\[\e[38;5;34m\]\u\[\e[38;5;15m\]@\[\e[00;31m\]\h\e::\[\e[38;5;33m\]\w \[\033[0m\]$ "
+
+Green, Red, blue (white colon)
+PS1="\[\e[38;5;34m\]\u\[\e[38;5;15m\]@\[\e[00;31m\]\h\e[\e[38;5;15m\]:\[\e[38;5;33m\]\w\[\033[0m\]$ "
+
+Yellow, Red Grapefruit, blue (trailing slash + white colon)
+PS1="\[\e[38;5;226m\]\u\[\e[38;5;15m\]@\[\e[38;5;9m\]\h\e[\e[38;5;15m\]:\[\e[38;5;33m\]\w\[\033[0m\]\e[38;5;33m\]/\e[38;5;15m\]$ "
+
+Yellow, Red Grapefruit, blue (trailing slash + white colon, MacOS version without trailing slash)
+PS1="\[\e[38;5;226m\]\u\[\e[38;5;15m\]@\[\e[38;5;9m\]\h\e[\e[38;5;15m\]:\[\e[38;5;33m\]\w\[\033[0m\]\e[38;5;33m\]\e[38;5;15m\]$ "
+
+Green, Red Grapefruit, blue (trailing slash + white colon)
+PS1="\[\e[38;5;34m\]\u\[\e[38;5;15m\]@\[\e[38;5;9m\]\h\e[\e[38;5;15m\]:\[\e[38;5;33m\]\w\[\033[0m\]\e[38;5;33m\]/\e[38;5;15m\]$ "
+
+
+Shades of green
+export PS1="\[\e[38;5;34m\]\u\[\e[38;5;40m\]@\[\e[38;5;46m\]\h \[\e[38;5;154m\]\w \[\033[0m\]$ "
+
+

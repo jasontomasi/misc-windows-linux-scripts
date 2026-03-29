@@ -1,0 +1,29 @@
+pscp -2 -4 -C -scp  C:\UTILITIES\IOS\i86b* root@192.168.1.38:/opt/unetlab/addons/iol/bin/
+
+pscp -2 -4 -C -scp C:\UTILITIES\IOS\L3-* root@192.168.1.38:/opt/unetlab/addons/qemu/
+
+pscp -2 -4 -C -scp C:\UTILITIES\IOS\vios* root@192.168.1.38:/opt/unetlab/addons/qemu/
+
+pscp -2 -4 -C -scp C:\UTILITIES\IOS\c3640-* root@192.168.1.38:/opt/unetlab/addons/dynamips/
+
+pscp -2 -4 -C -scp C:\UTILITIES\IOS\c850-* root@192.168.1.38:/opt/unetlab/addons/dynamips/
+
+
+
+pscp -2 -4 -C -scp C:\UTILITIES\IOS\virtioa.qcow2 root@192.168.1.38:/opt/unetlab/addons/qemu/viosl2-adventerprisek9-m.cml.SSA.high_iron_20180510/
+pscp -2 -4 -C -scp C:\UTILITIES\IOS\virtioa.qcow2 root@192.168.1.38:/opt/unetlab/addons/qemu/vios-adventerprisek9-m.SPA.156-1.T/
+pscp -2 -4 -C -scp C:\UTILITIES\IOS\virtioa.qcow2 root@192.168.1.38:/opt/unetlab/addons/qemu/vios-adventerprisek9-m-15.6.2T/
+
+
+
+
+
+
+
+
+
+
+/opt/unetlab/wrappers/unl_wrapper -a fixpermissions
+
+
+

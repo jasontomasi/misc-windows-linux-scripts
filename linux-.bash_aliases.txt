@@ -1,0 +1,8 @@
+pico ~/.bash_aliases
+
+alias backup='/home/intuitive/eve-ng-lab-backup-script.sh'
+alias ls='ls -alF'
+
+
+source ~/.bash_aliases
+

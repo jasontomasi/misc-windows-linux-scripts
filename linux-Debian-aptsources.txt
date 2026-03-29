@@ -1,0 +1,55 @@
+
+Debian 10
+---------
+
+deb https://deb.debian.org/debian buster main contrib non-free
+deb-src https://deb.debian.org/debian buster main contrib non-free
+
+deb https://deb.debian.org/debian-security/ buster/updates main contrib non-free
+deb-src https://deb.debian.org/debian-security/ buster/updates main contrib non-free
+
+deb https://deb.debian.org/debian buster-updates main contrib non-free
+deb-src https://deb.debian.org/debian buster-updates main contrib non-free
+
+deb https://deb.debian.org/debian buster-backports main contrib non-free
+deb-src https://deb.debian.org/debian buster-backports main contrib non-free
+
+
+Debian 11
+---------
+
+deb https://deb.debian.org/debian bullseye main contrib non-free
+deb-src https://deb.debian.org/debian bullseye main contrib non-free
+
+deb https://deb.debian.org/debian-security/ bullseye-security main contrib non-free
+deb-src https://deb.debian.org/debian-security/ bullseye-security main contrib non-free
+
+deb https://deb.debian.org/debian bullseye-updates main contrib non-free
+deb-src https://deb.debian.org/debian bullseye-updates main contrib non-free
+
+deb https://deb.debian.org/debian bullseye-backports main contrib non-free
+deb-src https://deb.debian.org/debian bullseye-backports main contrib non-free
+
+
+Debian 12
+---------
+
+deb http://mirror.fsmg.org.nz/debian/ bookworm main contrib non-free non-free-firmware
+deb-src http://mirror.fsmg.org.nz/debian/ bookworm main contrib non-free non-free-firmware
+
+deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+deb-src http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+
+deb http://mirror.fsmg.org.nz/debian/ bookworm-updates main contrib non-free non-free-firmware
+deb-src http://mirror.fsmg.org.nz/debian/ bookworm-updates main contrib non-free non-free-firmware
+
+deb http://deb.debian.org/debian bookworm-backports main contrib non-free-firmware
+
+
+Debian 13
+---------
+deb http://mirror.fsmg.org.nz/debian/ trixie main contrib non-free non-free-firmware
+deb-src http://mirror.fsmg.org.nz/debian/ trixie main contrib non-free non-free-firmware
+
+deb http://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+deb-src http://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware

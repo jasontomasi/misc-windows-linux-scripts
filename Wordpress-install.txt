@@ -1,0 +1,31 @@
+WORDPRESS INSTALL
+
+apt install wordpress apache2 mariadb-server
+
+
+
+mysql -u root -p
+
+CREATE DATABASE wp1;
+GRANT ALL ON wp1.* TO 'wp1'@'localhost' IDENTIFIED BY '95120t' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+
+
+Manual steps:
+-------------
+
+Add line to file "wp-config.php" to enable WordPress to download themes from Wordpress.org:
+define( 'FS_METHOD','direct' ); 
+
+
+
+
+
+chown -R www-data:www-data /var/www/
+chmod -R 755 /var/www/
+
+find /var/www/ -type d -exec chmod 755 {} \;
+find /var/www/ -type f -exec chmod 644 {} \;
+
+(Source: https://wordpress.org/support/article/hardening-wordpress/#changing-file-permissions)

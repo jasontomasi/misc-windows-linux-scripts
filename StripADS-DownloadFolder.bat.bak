@@ -1,0 +1,4 @@
+@echo on
+C:\UTILITIES\sysinternals\streams.exe -s -d %USERPROFILE%\Downloads\*
+pause
+exit

@@ -1,0 +1,50 @@
+
+--------------------------------------------
+Configuring GoldMine to use a new SQL server
+--------------------------------------------
+
+This must be down when you are:
+
+- Moving the SQL database to a new host
+- Renaming the computer on which your GM DB is hosted
+
+
+1) Ensure GoldMine is closed
+
+2) Edit the file: \Goldmine\dbalias.ini
+
+3) Find the "HOST" field, and modify its value so that it matches the new server name.
+
+Examples:
+	DELL-OPTIPLEX\GOLDMINE
+	BUSINESS-COMPUTER\GOLDMINE
+	MyLaptop\GOLDMINE
+
+Find the "PASSWORD" field, and remove the value from it.
+
+The dbalias.ini file entries should look like this:
+
+HOST=MyLaptop\GOLDMINE
+PASSWORD=
+
+
+4) Open GoldMine, login as normal, and wait for it to fail with the error "Incorrect configuration of database alias 'goldmine'", then click OK
+
+5) GoldMine will prompt your for a username/password to access the SQL server.  Enter the user account 'SA', and the password from the previous step.
+
+This should allow you to enter GoldMine.
+
+6) You need make this setting permanent by going to the GoldMine menu: Tools -> Databases -> Alias Manager...
+
+Click on the existing entry to select it (should be called 'Goldmine', or similar), then click 'Edit Alias'
+
+- In the 'Login' field, type: sa
+- In the 'Password' field, type: (the password from the previous step)
+- Ensure that 'Use Windows Authentication (SPPI)' is NOT ticked
+- Click 'OK' to save changes
+
+7) GoldMine should automatically close/reopen, and you will be able to use it as normal
+
+
+Note: the last step will populate this information into GoldMine's dbalias.ini file
+

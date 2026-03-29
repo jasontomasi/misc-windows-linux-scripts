@@ -1,0 +1,13 @@
+SSH
+U: ubnt
+P: ubnt
+
+sudo syswrapper.sh restore-default
+
+set-default
+
+upgrade https://dl.ui.com/unifi/firmware/U7PG2/6.2.35.14043/BZ.qca956x_6.2.35+14043.220812.1940.bin
+
+set-inform http://192.168.137.1:8080/inform
+
+

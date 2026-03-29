@@ -1,0 +1,9 @@
+Event Viewer query
+
+<QueryList>
+  <Query Id="0" Path="Security">
+    <Select Path="Security"> 
+*[EventData[Data and (Data='username')]]
+</Select>
+  </Query>
+</QueryList>

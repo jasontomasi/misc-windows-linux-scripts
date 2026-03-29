@@ -1,0 +1,148 @@
+VPN-PoC
+--------
+
+https://www.ciscozine.com/dmvpn-phase-3-guide/
+
+https://www.cyberciti.biz/faq/linux-ip-command-examples-usage-syntax/#15
+
+https://www.cisco.com/c/en/us/support/docs/security/vpn-client/12428-xauthTR.html#prereq
+
+http://www.pro-bono-publico.de/projects/tac_plus.html#AEN2589
+
+https://www.fieldengineer.com/blogs/dynamic-multipoint-vpn
+
+https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/sec_conn_dmvpn/configuration/15-mt/sec-conn-dmvpn-15-mt-book/sec-conn-dmvpn-dmvpn.html#GUID-F7BE03F5-D3CE-4693-9E2E-B407E902433D
+
+https://www.cisco.com/c/en/us/support/docs/security-vpn/ipsec-negotiation-ike-protocols/29240-dcmvpn.html
+
+https://resources.intenseschool.com/dmvpn-redundancy-dual-hub-dual-isp-links/
+
+https://www.cisco.com/c/en/us/support/docs/security-vpn/ipsec-negotiation-ike-protocols/41940-dmvpn.html
+
+
+
+CRM
+---
+https://startyourownisp.com/posts/billing-customer-management/
+
+
+
+NeuCRM
+
+Splynx - https://demo.splynx.com/admin/networking/routers/list
+
+UNMS - https://unms.com/crm
+
+Freeside - http://freeside.biz/freeside/
+
+
+
+
+
+
+
+
+ip address add 172.20.99.10/255.255.255.0 dev eth0
+ip route add 0.0.0.0/0 via 172.20.99.1
+
+
+
+
+
+
+
+
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+interface Loopback1
+ ip address 1.1.1.2 255.255.255.255
+!
+
+interface Tunnel0
+ ip address 10.0.0.1 255.255.255.0
+ keepalive 10 3
+ tunnel source Ethernet0/0
+ tunnel mode ipsec ipv4
+ tunnel destination 10.230.18.130
+ tunnel protection ipsec profile VPN_PROF_PROTECT
+!
+
+interface Tunnel1
+ ip address 10.0.0.1 255.255.255.0
+ ip ospf mtu-ignore
+ keepalive 10 3
+ tunnel source e0/2
+ tunnel mode ipsec ipv4
+ tunnel destination 192.168.43.66
+ tunnel protection ipsec profile VPN_PROF_PROTECT
+!
+interface Tunnel2
+ ip address 10.0.2.1 255.255.255.0
+ keepalive 10 3
+ tunnel source Ethernet0/0
+ tunnel mode ipsec ipv4
+ tunnel destination 11.56.3.195
+ tunnel protection ipsec profile VPN_PROF_PROTECT
+!
+interface Tunnel3
+ ip address 9.9.9.1 255.255.255.252
+ ip tcp adjust-mss 1436
+ tunnel source Ethernet0/0
+ tunnel destination 192.168.43.66
+
+
+-------------------------------------------------------------------
+
+
+crypto ikev2 proposal KAVON-proposal
+ encryption aes-cbc-256
+ integrity md5 sha1 sha256 sha384 sha512
+ group 5 1 14 15 16 19 2 21 24
+!
+crypto ikev2 policy KAVON-policy
+ proposal KAVON-proposal
+!
+crypto ikev2 keyring KAVON-ring
+peer VPN-SRV-1
+address 100.99.0.7
+pre-shared-key vpn1pass!!
+exit
+peer VPN-SRV-2
+address 200.99.0.7
+pre-shared-key vpn2pass!!
+exit
+peer VPN-SRV-3
+address 211.99.0.7
+pre-shared-key vpn3pass!!
+exit
+!
+crypto ikev2 profile KAVON-profile
+ match identity remote address 192.168.43.66 255.255.255.255
+ authentication remote pre-share key vpn4pa55
+ authentication local pre-share
+ keyring local KAVON-ring
+!
+!
+crypto isakmp policy 10
+ encr aes 256
+ authentication pre-share
+ group 5
+crypto isakmp nat keepalive 10
+crypto isakmp key vpn1pass!! address 100.99.0.7
+crypto isakmp key vpn2pass!! address 200.99.0.7
+crypto isakmp key vpn3pass!! address 211.99.0.7
+!
+!
+crypto ipsec transform-set VPN-SET ah-sha256-hmac esp-aes esp-sha-hmac
+ mode transport
+crypto ipsec transform-set KAVON-trans esp-aes 256 esp-sha256-hmac
+ mode tunnel
+!
+crypto ipsec profile KAVON-protect-gre
+ set transform-set KAVON-trans
+ set ikev2-profile KAVON-profile
+ responder-only
+!
+crypto ipsec profile VPN_PROF_PROTECT
+ set transform-set VPN-SET

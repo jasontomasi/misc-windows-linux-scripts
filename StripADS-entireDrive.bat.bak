@@ -1,0 +1,6 @@
+@echo on
+Y:\UTILITIES\sysinternals\streams.exe -s -d c:\*
+Y:\UTILITIES\sysinternals\streams.exe -s -d d:\*
+Y:\UTILITIES\sysinternals\streams.exe -s -d y:\*
+pause
+exit

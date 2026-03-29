@@ -1,0 +1,73 @@
+
+access-list 110 remark Site to Site VPN
+access-list 110 permit ip 192.168.1.0 0.0.0.255 172.16.14.0 0.0.0.255
+access-list 110 deny ip 192.168.1.0 0.0.0.255 any
+
+crypto isakmp policy 1
+ encr 3des
+ authentication pre-share
+ group 2
+
+crypto isakmp key *OMTATSAT* address 202.202.202.202 no-xauth
+
+crypto ipsec transform-set TSET esp-3des esp-sha-hmac
+crypto ipsec transform-set tr-null-sha esp-null esp-sha-hmac
+crypto ipsec transform-set tr-des-md5 esp-des esp-md5-hmac
+crypto ipsec transform-set tr-3des-md5 esp-3des esp-md5-hmac
+crypto ipsec transform-set tr-3des-sha esp-3des esp-sha-hmac
+crypto ipsec transform-set tr-aes-sha esp-aes esp-sha-hmac
+
+crypto map VPN_crypto_map 110 ipsec-isakmp
+ set peer 202.202.202.202
+ set transform-set TSET
+ match address 110
+
+interface XXX
+ crypto map VPN_crypto_map
+ no cdp enable
+
+access-list 101 remark Traffic allowed to enter the router from the Internet
+access-list 101 permit ip 172.16.14.0 0.0.0.255 192.168.1.0 0.0.0.255
+access-list 101 deny ip 0.0.0.0 0.255.255.255 any
+access-list 101 deny ip 10.0.0.0 0.255.255.255 any
+access-list 101 deny ip 127.0.0.0 0.255.255.255 any
+access-list 101 deny ip 169.254.0.0 0.0.255.255 any
+access-list 101 deny ip 172.16.0.0 0.15.255.255 any
+access-list 101 deny ip 192.0.2.0 0.0.0.255 any
+access-list 101 deny ip 192.168.0.0 0.0.255.255 any
+access-list 101 deny ip 198.18.0.0 0.1.255.255 any
+access-list 101 deny ip 224.0.0.0 0.15.255.255 any
+access-list 101 deny ip any host 255.255.255.255
+access-list 101 permit udp any any eq 4500
+access-list 101 permit udp any any eq isakmp
+access-list 101 permit esp any any
+access-list 101 permit tcp any any eq 1723
+access-list 101 permit gre any any
+access-list 101 deny icmp any any echo
+access-list 101 deny ip any any log
+
+access-list 102 remark Traffic allowed to enter the router from the Ethernet
+access-list 102 permit ip any host 192.168.1.254
+access-list 102 deny ip any host 192.168.1.255
+access-list 102 deny udp any any eq tftp log
+access-list 102 permit ip 192.168.1.0 0.0.0.255 172.16.14.0 0.0.0.255
+access-list 102 deny ip any 0.0.0.0 0.255.255.255 log
+access-list 102 deny ip any 10.0.0.0 0.255.255.255 log
+access-list 102 deny ip any 127.0.0.0 0.255.255.255 log
+access-list 102 deny ip any 169.254.0.0 0.0.255.255 log
+access-list 102 deny ip any 172.16.0.0 0.15.255.255 log
+access-list 102 deny ip any 192.0.2.0 0.0.0.255 log
+access-list 102 deny ip any 192.168.0.0 0.0.255.255 log
+access-list 102 deny ip any 198.18.0.0 0.1.255.255 log
+access-list 102 deny udp any any eq 135 log
+access-list 102 deny tcp any any eq 135 log
+access-list 102 deny udp any any eq 137 log
+access-list 102 deny udp any any eq 138 log
+access-list 102 deny tcp any any eq 445 log
+access-list 102 permit ip 192.168.1.0 0.0.0.255 any
+access-list 102 permit ip any host 255.255.255.255
+access-list 102 deny ip any any log
+
+access-list 105 remark Traffic to NAT
+access-list 105 deny ip 192.168.1.0 0.0.0.255 172.16.14.0 0.0.0.255
+access-list 105 permit ip 192.168.1.0 0.0.0.255 any
